@@ -20,6 +20,8 @@ public class Main {
         }
 
         int[] Result_Sum = new int[Sum_N];
+        StringBuilder sb = new StringBuilder();
+
         for (int j=0;j<Sum_N;j++){
             str = new StringTokenizer(br.readLine());
             int ind_1 = Integer.parseInt(str.nextToken())-1;
@@ -29,8 +31,9 @@ public class Main {
             }else{
                 Result_Sum[j] = Cum_Sum[ind_2]-Cum_Sum[ind_1-1];
             }
-            System.out.println(Result_Sum[j]);
+            sb.append(Result_Sum[j]).append("\n");
+            //sb.append(Result_Sum[j] + "\n"); // 위와 같음
         }
-
+        System.out.println(sb);
     }
 }
