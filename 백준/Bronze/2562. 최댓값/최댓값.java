@@ -11,7 +11,7 @@ public class Main {
         }
 
         int Val_max = 0; // 최대값 초기화
-        int ind_max = 0; // 최대값인덱스 초기화
+        int ind_max = 1; // 최대값인덱스 초기화
 
         for (int i=0; i<9; i++){
             if (Val_max < arr[i]){
