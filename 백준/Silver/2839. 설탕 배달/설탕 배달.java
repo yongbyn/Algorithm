@@ -1,23 +1,31 @@
+import java.io.*;
 import java.util.*;
+
 public class Main {
-    public static void main(String[] args) {
-        Scanner input = new Scanner(System.in); // scanner 객체 생성
-        int N = input.nextInt(); // 입력받은 문자열 저장
-        int N_bag=0; // 봉지 수
-        
-        if ( N%5 == 0){ 
-            N_bag = N/5;
-        }else if((N%5) == 1||(N%5) == 3){
-            N_bag = (N/5)+1;
-        }else if((N%5) == 2||(N%5) == 4){
-            N_bag = (N/5)+2;
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+
+        int N = Integer.parseInt(st.nextToken());
+        int bag3 = 3;
+        int bag5 = 5;
+        int minCount = Integer.MAX_VALUE;
+        int minPlayCount3 = N/3;
+        int minPlayCount5 = N/5;
+
+        for (int  i = 0; i <= minPlayCount3; i++) {
+            for ( int j = 0; j <= minPlayCount5; j++) {
+                if ((bag3 * i + bag5 * j) == N) {
+                    minCount = Math.min(minCount,i+j);
+                }
+            }
         }
-        
-        if(N==3){ // 예외 설정
-            N_bag = 1;
-        }else if(N==4 || N==7){
-            N_bag = -1;
+
+        if (minCount == Integer.MAX_VALUE) {
+            System.out.println(-1);
+        } else {
+            System.out.println(minCount);
         }
-            System.out.println(N_bag);
+
     }
 }
