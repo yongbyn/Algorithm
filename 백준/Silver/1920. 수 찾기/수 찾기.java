@@ -1,52 +1,39 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Arrays;
+import java.util.*;
+import java.io.*;
 
-
-public class Main{
-
-    static int N;
-    static int[] AN;
-    static int M;
-    static int[] AM;
-
+public class Main {
     public static void main(String[] args) throws IOException {
-
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-        N = Integer.parseInt(br.readLine());
-        AN = Arrays.stream(br.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
-
-        M = Integer.parseInt(br.readLine());
-        AM = Arrays.stream(br.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
-
-        Arrays.sort(AN); // 오름차순 정렬
-
-        int[] ansArr = new int[M];
-
-        for (int i=0; i<M; i++){
-            ansArr[i] = binarySearch(AM[i],AN); // 찾을 key와 기준이 될 배열
-            System.out.print(ansArr[i] + "\n"); // for문 따로 안돌릴려고
+        int N = Integer.parseInt(br.readLine());
+        int[] A = new int[N];
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        for (int i = 0; i < N; i++) {
+            A[i] = Integer.parseInt(st.nextToken());
         }
-    }
-
-    public static int binarySearch(int key, int[] AN){
-        int low = 0; 
-        int mid;
-        int high = N - 1;
-
-        while(low <= high){ // 이분탐색 조건
-            mid = (low + high) / 2;
-
-            if (AN[mid] == key){ // 가운데
-                return 1;
-            }else if (AN[mid] > key){ // 왼쪽
-                high = mid - 1;
-            }else { // AN[mid] < key // 오른쪽
-                low = mid + 1;
+        Arrays.sort(A);
+        
+        int M = Integer.parseInt(br.readLine());
+        st = new StringTokenizer(br.readLine());
+        for (int i = 0; i < M; i++) {
+            boolean find = false;
+            int target = Integer.parseInt(st.nextToken());
+            int start = 0;
+            int end = A.length - 1;
+            while (start <= end) {
+                int mid_index = (start+end)/2;
+                int mid_value = A[mid_index];
+                
+                if (mid_value > target) {
+                    end = mid_index - 1;
+                } else if (mid_value < target) {
+                    start = mid_index + 1;
+                } else {
+                    find = true;
+                    break;
+                }
             }
+            if (find) System.out.println(1);
+            else System.out.println(0);
         }
-        return 0; // low가 high보다 커졌는데 AN에 key랑 같은 값이 없으면 0 출력
     }
 }
