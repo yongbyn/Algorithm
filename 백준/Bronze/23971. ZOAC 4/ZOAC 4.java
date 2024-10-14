@@ -11,8 +11,8 @@ public class Main {
 		int N = Integer.parseInt(str[2]);
 		int M = Integer.parseInt(str[3]);
 
-		int peopleH = (int)Math.ceil((double)H / (N+1));
-		int peopleW = (int)Math.ceil((double)W / (M+1));
+		int peopleH = (int)Math.ceil((float)H / (N+1));
+		int peopleW = (int)Math.ceil((float)W / (M+1));
 
 		System.out.println(peopleH*peopleW);
 
