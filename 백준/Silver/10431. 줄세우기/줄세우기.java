@@ -21,10 +21,8 @@ public class Main {
                     }
                 }
             }
-        }
-        
-        for (int i = 0; i < P; i++) {
             System.out.println(i+1 + " " + count[i]);
         }
+        
     }
 }
