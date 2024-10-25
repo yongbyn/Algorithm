@@ -5,7 +5,7 @@ public class Main {
 	static int[] dx = {-1, 0, 1, 0};
 	static int[] dy = {0, 1, 0, -1};
 	static int[][] map;
-	static boolean[][] visited;
+	static boolean[][] cleaned;
 	static int n,m;
 	static int cleanCount = 0;
 
@@ -16,7 +16,7 @@ public class Main {
 		n = Integer.parseInt(st.nextToken());
 		m = Integer.parseInt(st.nextToken());
 		map = new int[n][m];
-		visited = new boolean[n][m];
+		cleaned = new boolean[n][m];
 
 		st = new StringTokenizer(br.readLine());
 		int x = Integer.parseInt(st.nextToken());
@@ -30,56 +30,38 @@ public class Main {
 			}
 		}
 
-		bfs(x, y, dir);
+		dfs(x, y, dir);
 		System.out.println(cleanCount);
 	}
 
-	public static void bfs(int x, int y, int dir) {
-		Queue<int[]> q = new LinkedList<>();
-		q.add(new int[]{x, y, dir});
-		visited[x][y] = true;
+	public static void dfs(int x, int y, int dir) {
+		// 현재 위치를 청소
+		if (map[x][y] == 0) {
+			cleanCount++;
+			map[x][y] = -1; // 완료 표시
+		}
 
-		while (!q.isEmpty()) {
-			int[] cur = q.poll();
-			int curX = cur[0];
-			int curY = cur[1];
-			int curDir = cur[2];
+		// 4방향을 차례대로 탐색
+		for (int i = 0; i < 4; i++) {
+			dir = (dir + 3) % 4; // 반시계 회전 [북 동 남 서] -> -1 or +3 해주면 됨
+			int nx = x + dx[dir];
+			int ny = y + dy[dir];
 
-			//현재 위치 청소
-			if (map[curX][curY] == 0) {
-				cleanCount++;
-				map[curX][curY] = -1; // 완료 표시
+			// 아직 청소하지 않은 경우 + 범위 내
+			if (nx >= 0 && nx < n && ny >= 0 && ny < m && map[nx][ny] == 0) {
+				dfs(nx, ny, dir); // 재귀적으로 다음 위치로 이동
+				return; // 청소했으니 더 이상 탐색하지 않고 리턴
 			}
+		}
 
-			boolean moved = false;
-			for (int i = 0; i < 4; i++) {
-				curDir = (curDir + 3) % 4; // 반시계 회전 [북 동 남 서] -> -1 or +3 해주면 됨
-				int nx = curX + dx[curDir];
-				int ny = curY + dy[curDir];
+		// 4방향 모두 청소가 되었거나 벽인 경우 후진
+		int backDir = (dir + 2) % 4; // 반대는 + 2 or -2
+		int bx = x + dx[backDir];
+		int by = y + dy[backDir];
 
-				// 아직 청소하지 않은 경우 + 범위 내
-				if (!visited[nx][ny] && map[nx][ny] == 0 && nx >= 0 && ny >= 0 && nx < n && ny < m) {
-					q.add(new int[]{nx, ny, curDir});
-					visited[nx][ny] = true;
-					moved = true;
-					break; // 이동했으면 나머지는 탐색 X
-				}
-			}
-
-			// 4방향 모두 청소되었거나 벽인 경우 후진
-			if (!moved) {
-				int backDir = (curDir + 2 ) % 4; // 반대는 + 2 or -2
-				int bx = curX + dx[backDir];
-				int by = curY + dy[backDir];
-
-				// 후진할 수 있으면 후진
-				if (bx >= 0 && bx < n && by >= 0 && by < m && map[bx][by] != 1) {
-					q.add(new int[]{bx, by, curDir}); // 후진한 위치 + curDir를 큐에 넣음
-				} else {
-					// 후진 안되면 종료
-					return;
-				}
-			}
+		// 후진할 수 있으면 후진
+		if (bx >= 0 && bx < n && by >= 0 && by < m && map[bx][by] != 1) {
+			dfs(bx, by, dir); // 후진한 위치에서 다시 탐색
 		}
 	}
 }
