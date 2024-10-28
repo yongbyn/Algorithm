@@ -19,7 +19,7 @@ public class Main {
 		int totalRain = 0;
 
 
-		for (int i = 0; i < W; i++) {
+		for (int i = 1; i < W-1; i++) {
 			int left = 0;
 			int right = 0;
 
